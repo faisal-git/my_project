@@ -12,6 +12,8 @@ from tkinter import messagebox as msgbx
 from tkinter import filedialog
 import pandas as pd
 import re
+import numpy as np
+from matplotlib import pyplot as plt
 
 
 #--------------------------------for tkinter windows -------------------------------------------------
@@ -25,7 +27,7 @@ root.configure(background = "black")
 top=Frame(root,width = 1350, height = 100, bd = 15,bg="LightSkyBlue1",relief="raise",padx=10,pady=10)
 top.pack(side=TOP,fill=X,pady=20)
 
-f1=Frame(root,bg='DeepSkyBlue3',bd=20,relief=RIDGE)
+f1=Frame(root,bg='DeepSkyBlue3',bd=10,relief=RIDGE)
 f2=Frame(root,bg='gray63',bd=20,relief=RIDGE)
 f1.pack(side="left",fill=BOTH,expand=True,padx=35,pady=30)
 f2.pack(side='right',fill=BOTH,expand=True,padx=35,pady=30)
@@ -34,8 +36,10 @@ f3=Frame(f2,bg='gray63')
 f3.pack(side=TOP)
 f4=Frame(f2,bg='gray63')
 f4.pack()
-f5=Frame(f2,bg='gray63')
-f5.pack(side=BOTTOM,fill=BOTH)
+f5=Frame(f2,bg='gray63',bd=10,relief=RIDGE)
+f5.pack(fill=BOTH)
+f6=Frame(f2,bg='gray63',bd=10,relief=RIDGE)
+f6.pack(fill=BOTH)
 
 
 
@@ -90,7 +94,7 @@ def for_xls(event=None):
         df=pd.read_excel(file_name)
         #data_wrangling(data_frame)
     
-
+#----------------------------------------------------------
 
 def for_csv(event=None):
     print('csv')
@@ -107,7 +111,7 @@ def for_csv(event=None):
         df=pd.read_csv(file_name)
         print(df.columns)
         #data_wrangling(data_frame)
-
+#-----------------------------------------------------------
 def display(event=None):
     print("file",file_name)
     if(file_name!=""):
@@ -120,7 +124,7 @@ def display(event=None):
     else:
         
         msgbx.showwarning("error","No File is selected")
-
+#---------------------------------------------------------
 def info(event=None):
     if(file_name):
         
@@ -155,7 +159,7 @@ def info(event=None):
     else:
         msgbx.showwarning("ABORT","No file is selected")
         
-    
+#----------------------------------------------------------------    
 
 
 def data_wrangling():
@@ -167,24 +171,160 @@ def to_reset():
     global file_name
     file_name=""
     recreate()
-    
+#-----------------------------------------------------------------
+def drop_col():
+    global df
+    if(file_name):
+        val=col_entry.get()
+        if(val):
+            if val in df.columns:
+                option=messagebox.askyesno("drop_column","Do you want to the  "+val+"  column ?")
+                
+                if(option):
+                    
+                    df.drop(val,axis=1,inplace=True)
+                    info()
+                else:
+                    pass
+            else:
+                msgbx.showwarning("ABORT","No such column")
+        
+        else:
+            msgbx.showwarning("ABORT","Enter a valid column_name")
+            
+        
+    else:
+        msgbx.showwarning("ABORT","No file is selected")
+        
+#-------------------------------------------------------------------
+def nan_values():
+    if(file_name):
+        val=col_entry.get()
+        if(val):
+            if val in df.columns:
+                    print(df[val].isna().sum(),df.shape[0])
+                    per=(df[val].isna().sum()/df.shape[0])*100
+                    print(per)
+                    msgbx.showinfo("NaN_values",str(round(per,4))+"% data is NaN")
+                
+               
+                    
+                    
+               
+            else:
+                msgbx.showwarning("ABORT","No such column")
+        
+        else:
+            msgbx.showwarning("ABORT","Enter a valid column_name")
+            
+        
+    else:
+        msgbx.showwarning("ABORT","No file is selected")
+
+#--------------------------------------------------------------------------------
+def drop_row():
+    if(file_name):
+        #to give info of how many will be drop
+        global df
+        df=df.dropna(axis=0,how='any')
+        info()
+        
+            
+        
+    else:
+        msgbx.showwarning("ABORT","No file is selected")
+
+
+#--------------------------------------------------------------------------------
+def normalize():
+    recreate()
+    global df
+    #-------------------checking shoud be done -----------------------------------
+    #--------------------------survived vs ~survived------------------------------
+    s=df['Survived'].value_counts()
+    s_label=Label(f1,text="No. of passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    s_label.pack(padx=10,pady=10)
+    t_label=Label(f1,text="Survived Passenger:  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    t_label.pack(padx=10,pady=10)
+    s=df['Survived'].value_counts(normalize=True)
+    u_label=Label(f1,text="% of passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    u_label.pack(padx=10,pady=10)
+    v_label=Label(f1,text="% of Survived Passenger:     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    v_label.pack(padx=10,pady=10)
+    # -------------------------males(survived vs ~survived)------------------------------   
+    s=df['Survived'][df['Sex']=='male'].value_counts()
+    s_label=Label(f1,text="No. of male passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    s_label.pack(padx=10,pady=5)
+    t_label=Label(f1,text="No. male passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    t_label.pack(padx=10,pady=5)
+    s=df['Survived'][df['Sex']=='male'].value_counts(normalize=True)
+    u_label=Label(f1,text="% of male passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    u_label.pack(padx=10,pady=5)
+    v_label=Label(f1,text="% of male passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    v_label.pack(padx=10,pady=5) 
+    #-------------------------- females(survived vs ~survived)---------------------------------------    
+    s=df['Survived'][df['Sex']=='female'].value_counts()
+    s_label=Label(f1,text="No. of female passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    s_label.pack(padx=10,pady=5)
+    t_label=Label(f1,text="No. female passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    t_label.pack(padx=10,pady=5)
+    s=df['Survived'][df['Sex']=='female'].value_counts(normalize=True)
+    u_label=Label(f1,text="% of female passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    u_label.pack(padx=10,pady=5)
+    v_label=Label(f1,text="% of female passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+    v_label.pack(padx=10,pady=5)     
+        
+        
+        
+        
+        
 
 #Entry(f1aa, font=('arial', 16, 'bold'), bd = 8, width = 6, justify = 'left', textvariable = E_Latte, state = DISABLED)
-    
-
+        
+        
+#---------------------label-------------------------------------------------
+data=Label(f5,text="DaTa WranGling's tooLs")
+data.pack(pady=10)
+Nan=Label(f5,text="")   
+#-----------------------entry_point--------------------------------------------------------------
 file_entry=Entry(f3,font=('arial', 12, 'bold'))
+file_entry.pack(side=TOP,pady=10)
+col_entry=Entry(f5,font=('arial', 12, 'bold'))
+col_entry.pack(pady=10)
+NaN_entry=Entry(f5,font=('arial', 12, 'bold'))
 file_entry.pack(side=TOP,pady=10)
 
 #--------------------------codes for Buttons ----------------------------------------------
 button1=Button(f3,text='Open_csv',command=for_csv)
 button2=Button(f3,text='Open_xls',command=for_xls)
-file_entry.pack(side=TOP,pady=10)
 button1.pack(side=LEFT,pady=10)
 button2.pack(side=RIGHT,pady=10)
+#----------------buttons for display and info-------------------------------------------------
+
 button3=Button(f4,text='Display_Table_Canvas',command=display)
-button3.grid(row=0)
+button3.grid(row=0,pady=10,padx=10)
 button4=Button(f4,text='display_info',command=info)
-button4.grid(row=0,column=4)
+button4.grid(row=0,column=4,pady=10,padx=10)
+#-----------------------buttons for data wrangling---------------------------------------------
+button5=Button(f5,text='Drop_column',command=drop_col)
+button5.pack(side=RIGHT,padx=10,pady=10)
+
+button6=Button(f5,text='% of_NaN_values',command=nan_values)
+button6.pack(side=RIGHT,padx=10,pady=10)
+
+button7=Button(f5,text="drop_row_with_NaN",command=drop_row)
+button7.pack(side=RIGHT,padx=10,pady=10)
+
+button8=Button(f5,text="Normalize",command=normalize)
+button8.pack(side=RIGHT,padx=10,pady=10)
+
+
+
+
+
+
+
+
 
 # button for clear all imported file 
 
