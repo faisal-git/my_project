@@ -203,7 +203,7 @@ def drop_col():
         val=col_entry.get()
         if(val):
             if val in df.columns:
-                option=messagebox.askyesno("drop_column","Do you want to the  "+val+"  column ?")
+                option=msgbx.askyesno("drop_column","Do you want to the  "+val+"  column ?")
                 
                 if(option):
                     
@@ -268,50 +268,87 @@ def normalize():
     if(file_name):
     #--------------------------survived vs ~survived------------------------------
         recreate()
-        s=df['Survived'].value_counts()
-        s_label=Label(f1,text="No. of passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        s_label.pack(padx=10,pady=10)
-        t_label=Label(f1,text="Survived Passenger:  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        t_label.pack(padx=10,pady=10)
-        s=df['Survived'].value_counts(normalize=True)
-        u_label=Label(f1,text="% of passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        u_label.pack(padx=10,pady=10)
-        v_label=Label(f1,text="% of Survived Passenger:     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        v_label.pack(padx=10,pady=10)
-        # -------------------------males(survived vs ~survived)------------------------------   
-        s=df['Survived'][df['Sex']=='male'].value_counts()
-        s_label=Label(f1,text="No. of male passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        s_label.pack(padx=10,pady=5)
-        t_label=Label(f1,text="No. male passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        t_label.pack(padx=10,pady=5)
-        s=df['Survived'][df['Sex']=='male'].value_counts(normalize=True)
-        u_label=Label(f1,text="% of male passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        u_label.pack(padx=10,pady=5)
-        v_label=Label(f1,text="% of male passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        v_label.pack(padx=10,pady=5) 
-        #-------------------------- females(survived vs ~survived)---------------------------------------    
-        s=df['Survived'][df['Sex']=='female'].value_counts()
-        s_label=Label(f1,text="No. of female passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        s_label.pack(padx=10,pady=5)
-        t_label=Label(f1,text="No. female passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        t_label.pack(padx=10,pady=5)
-        s=df['Survived'][df['Sex']=='female'].value_counts(normalize=True)
-        u_label=Label(f1,text="% of female passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        u_label.pack(padx=10,pady=5)
-        v_label=Label(f1,text="% of female passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-        v_label.pack(padx=10,pady=5)     
-        if("Child" in df.columns):
+        try:
+            s=df['Survived'].value_counts()
+            s_label=Label(f1,text="No. of passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            s_label.pack(padx=10,pady=10)
+            t_label=Label(f1,text="Survived Passenger:  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            t_label.pack(padx=10,pady=10)
+            s=df['Survived'].value_counts(normalize=True)
+            u_label=Label(f1,text="% of passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            u_label.pack(padx=10,pady=10)
+            v_label=Label(f1,text="% of Survived Passenger:     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            v_label.pack(padx=10,pady=10)
+        except:
+            s=df['survived'].value_counts()
+            s_label=Label(f1,text="No. of passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            s_label.pack(padx=10,pady=10)
+            t_label=Label(f1,text="Survived Passenger:  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            t_label.pack(padx=10,pady=10)
+            s=df['survived'].value_counts(normalize=True)
+            u_label=Label(f1,text="% of passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            u_label.pack(padx=10,pady=10)
+            v_label=Label(f1,text="% of Survived Passenger:     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            v_label.pack(padx=10,pady=10)
+        # -------------------------males(survived vs ~survived)------------------------------
+        try:
+            s=df['Survived'][df['Sex']=='male'].value_counts()
+            s_label=Label(f1,text="No. of male passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            s_label.pack(padx=10,pady=5)
+            t_label=Label(f1,text="No. male passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            t_label.pack(padx=10,pady=5)
+            s=df['Survived'][df['Sex']=='male'].value_counts(normalize=True)
+            u_label=Label(f1,text="% of male passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            u_label.pack(padx=10,pady=5)
+            v_label=Label(f1,text="% of male passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            v_label.pack(padx=10,pady=5)
+        except:
+            s=df['survived'][df['sex']=='male'].value_counts()
+            s_label=Label(f1,text="No. of male passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            s_label.pack(padx=10,pady=5)
+            t_label=Label(f1,text="No. male passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            t_label.pack(padx=10,pady=5)
+            s=df['survived'][df['sex']=='male'].value_counts(normalize=True)
+            u_label=Label(f1,text="% of male passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            u_label.pack(padx=10,pady=5)
+            v_label=Label(f1,text="% of male passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            v_label.pack(padx=10,pady=5)
+            
+        #-------------------------- females(survived vs ~survived)---------------------------------------
+        try:
+            s=df['Survived'][df['Sex']=='female'].value_counts()
+            s_label=Label(f1,text="No. of female passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            s_label.pack(padx=10,pady=5)
+            t_label=Label(f1,text="No. female passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            t_label.pack(padx=10,pady=5)
+            s=df['Survived'][df['Sex']=='female'].value_counts(normalize=True)
+            u_label=Label(f1,text="% of female passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            u_label.pack(padx=10,pady=5)
+            v_label=Label(f1,text="% of female passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            v_label.pack(padx=10,pady=5)
+        except:
+            s=df['survived'][df['sex']=='female'].value_counts()
+            s_label=Label(f1,text="No. of female passenger who didn't survived:    "+str(s[0]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            s_label.pack(padx=10,pady=5)
+            t_label=Label(f1,text="No. female passenger who survived  "+str(s[1]),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            t_label.pack(padx=10,pady=5)
+            s=df['survived'][df['sex']=='female'].value_counts(normalize=True)
+            u_label=Label(f1,text="% of female passenger who did't survived:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            u_label.pack(padx=10,pady=5)
+            v_label=Label(f1,text="% of female passenger who survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+            v_label.pack(padx=10,pady=5)     
+            if("Child" in df.columns):  
     
-            s=df['Survived'][df['Child']==1].value_counts(normalize=True)
-            u_label=Label(f1,text="% of children died:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-            u_label.pack(padx=10,pady=5)
-            v_label=Label(f1,text="% of children survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-            v_label.pack(padx=10,pady=5) 
-            s=df['Survived'][df['Child']==0].value_counts(normalize=True)
-            u_label=Label(f1,text="% of Adult died:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-            u_label.pack(padx=10,pady=5)
-            v_label=Label(f1,text="% of Adult survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
-            v_label.pack(padx=10,pady=5)    
+                s=df['Survived'][df['Child']==1].value_counts(normalize=True)
+                u_label=Label(f1,text="% of children died:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+                u_label.pack(padx=10,pady=5)
+                v_label=Label(f1,text="% of children survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+                v_label.pack(padx=10,pady=5) 
+                s=df['Survived'][df['Child']==0].value_counts(normalize=True)
+                u_label=Label(f1,text="% of Adult died:   "+str(round(s[0]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+                u_label.pack(padx=10,pady=5)
+                v_label=Label(f1,text="% of Adult survived :     "+str(round(s[1]*100,2)),fg='white',font  = ('Arial', 16, 'bold'),bg='DeepSkyBlue3')
+                v_label.pack(padx=10,pady=5)    
     else:
         msgbx.showwarning("ABORT","No file is selected")
         
@@ -324,64 +361,193 @@ def get_Graph():
         recreate()
         try:
             plt.clf()
-        except:
+        except: 
             print("No_Graph_is_open")
         if(variable.get()=="No_of_passenger vs class"):
-            print('Class wise no. of passengers')
-            print(df.groupby(['Pclass']).size())
-            df.groupby(['Pclass']).size().plot(kind='bar')
-            plt.title('No. of Passengers Class wise')
-            plt.ylabel('Number of passengers')
-            plt.xlabel('Class -->')
-            plt.tight_layout()
-            plt.show()
+            try:
+                print('Class wise no. of passengers')
+                print(df.groupby(['Pclass']).size())
+                df.groupby(['Pclass']).size().plot(kind='bar')
+                plt.title('No. of Passengers Class wise')
+                plt.ylabel('Number of passengers')
+                plt.xlabel('Class -->')
+                plt.tight_layout()
+                plt.show()
+            except:
+                print('Class wise no. of passengers')
+                print(df.groupby(['pclass']).size())
+                df.groupby(['pclass']).size().plot(kind='bar')
+                plt.title('No. of Passengers Class wise')
+                plt.ylabel('Number of passengers')
+                plt.xlabel('Class -->')
+                plt.tight_layout()
+                plt.show()
 
           
         elif(variable.get()=="No_of_passenger vs Class & Gender"):
-            print('No. of passengers class wise , gender wise')
-            print(df.groupby(['Pclass','Sex']).size())
-            df.groupby(['Pclass','Sex']).size().unstack().plot(kind='bar',stacked=True)
-            plt.title('No. of Passengers Classwise, Genderwise')
-            plt.ylabel('Number of passengers')
-            plt.xlabel('Class -->')
-            plt.tight_layout()
-            plt.show()
-            
-        elif(variable.get()=="No_of_passenger vs Class & Gender"):
-            pass
-        
+            try:
+                print('No. of passengers class wise , gender wise')
+                print(df.groupby(['Pclass','Sex']).size())
+                df.groupby(['Pclass','Sex']).size().unstack().plot(kind='bar',stacked=True)
+                plt.title('No. of Passengers Classwise, Genderwise')
+                plt.ylabel('Number of passengers')
+                plt.xlabel('Class -->')
+                plt.tight_layout()
+                plt.show()
+            except:
+                print('No. of passengers class wise , gender wise')
+                print(df.groupby(['pclass','sex']).size())
+                df.groupby(['pclass','sex']).size().unstack().plot(kind='bar',stacked=True)
+                plt.title('No. of Passengers Classwise, Genderwise')
+                plt.ylabel('Number of passengers')
+                plt.xlabel('Class -->')
+                plt.tight_layout()
+                plt.show()
+                
+                
+       
         elif(variable.get()=="class wise Survival vs. Non-Survival"):
-            print('Classwise survival vs non-survival')
-            print(df.groupby(['Pclass','Survived']).size())
-            df.groupby(['Pclass','Survived']).size().unstack().plot(kind='bar',stacked=True)
-            plt.title('Classwise survival vs non-survival')
-            plt.ylabel('Number of passengers')
-            plt.xlabel('Class -->')
-            plt.legend('Died','Survived')
-            plt.tight_layout()
-            plt.show()
+            try:
+                print('Classwise survival vs non-survival')
+                print(df.groupby(['Pclass','Survived']).size())
+                df.groupby(['Pclass','Survived']).size().unstack().plot(kind='bar',stacked=True)
+                plt.title('Classwise survival vs non-survival')
+                plt.ylabel('Number of passengers')
+                plt.xlabel('Class -->')
+                plt.legend('Died','Survived')
+                plt.tight_layout()
+                plt.show()
+            except:
+                print('Classwise survival vs non-survival')
+                print(df.groupby(['pclass','survived']).size()) 
+                df.groupby(['pclass','survived']).size().unstack().plot(kind='bar',stacked=True)
+                plt.title('Classwise survival vs non-survival')
+                plt.ylabel('Number of passengers')
+                plt.xlabel('Class -->')
+                plt.legend('Died','Survived')
+                plt.tight_layout()
+                plt.show()
+                
+        elif(variable.get()=="Total_Passengers in different age group"):
+            try:
+                #Pie Chart
+                age_bin = [0,18,25,40,60,100]
+                #create the bin
+                df['AgeBin'] = pd.cut(df.Age, bins= age_bin)
+                d_temp = df[np.isfinite(df['Age'])]
+                #Number of survivors based on age bin
+                survivors = d_temp.groupby('AgeBin')['Survived'].agg(sum)
+                #Total passengers in each bin
+                total_passengers = d_temp.groupby('AgeBin')['Survived'].agg('count')
+                
+                plt.pie(total_passengers, labels = total_passengers.index.values.tolist(),autopct='%1.1f%%',shadow=True , startangle=90)
+                plt.title('Total passengers in different age group')
+                plt.show()
+            except:
+                #Pie Chart
+                age_bin = [0,18,25,40,60,100]
+                #create the bin
+                df['AgeBin'] = pd.cut(df.age, bins= age_bin)
+                d_temp = df[np.isfinite(df['age'])]
+                #Number of survivors based on age bin
+                survivors = d_temp.groupby('AgeBin')['survived'].agg(sum)
+                #Total passengers in each bin
+                total_passengers = d_temp.groupby('AgeBin')['survived'].agg('count')
+                
+                plt.pie(total_passengers, labels = total_passengers.index.values.tolist(),autopct='%1.1f%%',shadow=True , startangle=90)
+                plt.title('Total passengers in different age group')
+                plt.show()
+            
+        elif(variable.get()=="survivors in different age group"):
+            try:
+                #Pie Chart
+                age_bin = [0,18,25,40,60,100]
+                #create the bin
+                df['AgeBin'] = pd.cut(df.Age, bins= age_bin)
+                d_temp = df[np.isfinite(df['Age'])]
+                #Number of survivors based on age bin
+                survivors = d_temp.groupby('AgeBin')['Survived'].agg(sum)
+                #Total passengers in each bin
+                total_passengers = d_temp.groupby('AgeBin')['Survived'].agg('count')
+                plt.pie(survivors, labels = survivors.index.values.tolist(),autopct='%1.1f%%',shadow=True,startangle=90)
+                plt.title('Survivors in different age group')
+                plt.show()
+            except:
+                #Pie Chart
+                age_bin = [0,18,25,40,60,100]
+                #create the bin
+                df['AgeBin'] = pd.cut(df.age, bins= age_bin)
+                d_temp = df[np.isfinite(df['age'])]
+                #Number of survivors based on age bin
+                survivors = d_temp.groupby('AgeBin')['survived'].agg(sum)
+                #Total passengers in each bin
+                total_passengers = d_temp.groupby('AgeBin')['survived'].agg('count')
+                plt.pie(survivors, labels = survivors.index.values.tolist(),autopct='%1.1f%%',shadow=True,startangle=90)
+                plt.title('Survivors in different age group')
+                plt.show()
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
         elif(variable.get()=="Class wise Survival vs. Non-Survival of child passengers"):
-            print('Classwise survival vs non-survival of child passengers')
-            print(df[titan_df.child==1].groupby(['Pclass','Survived']).size())
-            df[df.child==1].groupby(['Pclass','Survived']).size().unstack().plot(kind='bar',stacked=True)
-            plt.title('Classwise survival vs non-survival of child passengers')
-            plt.tight_layout()
-            plt.ylabel('Child passengers')
-            plt.xlabel('Class -->')
-            plt.legend('Died','Survived')
-            plt.tight_layout()
-            plt.show()
-    else:
-        msgbx.showwarning("ABORT","No file is selected")
+            if("child" in df.columns):
+                try:
+                    print('Classwise survival vs non-survival of child passengers')
+                    print(df[df.child==1].groupby(['Pclass','Survived']).size())
+                    df[df.child==1].groupby(['Pclass','Survived']).size().unstack().plot(kind='bar',stacked=True)
+                    plt.title('Classwise survival vs non-survival of child passengers')
+                    plt.tight_layout()
+                    plt.ylabel('Child passengers')
+                    plt.xlabel('Class -->')
+                    plt.legend('Died','Survived')
+                    plt.tight_layout()
+                    plt.show()
+                except:
+                    print('Classwise survival vs non-survival of child passengers')
+                    print(df[df.child==1].groupby(['pclass','survived']).size())
+                    df[df.child==1].groupby(['pclass','survived']).size().unstack().plot(kind='bar',stacked=True)
+                    plt.title('Classwise survival vs non-survival of child passengers')
+                    plt.tight_layout()
+                    plt.ylabel('Child passengers')
+                    plt.xlabel('Class -->')
+                    plt.legend('Died','Survived')
+                    plt.tight_layout()
+                    plt.show()
+                
+            else:
+                msgbx.showwarning("ABORT","No child  columns exists add dummy column ")
+                
+        else:
+            msgbx.showwarning("ABORT","No file is selected")
 #--------------------------------------------------------
 def dummy():
     if(file_name):
        
-    
-        df['child']=float('NaN')
-        df['child'][df['Age']<18]=1
-        df['child'][df['Age']>=18]=1
+        try:
+            
+            df['child']=float('NaN')
+            df['child'][df['Age']<18]=1
+            df['child'][df['Age']>=18]=1
+        except:
+            df['child']=float('NaN')
+            df['child'][df['age']<18]=1
+            df['child'][df['age']>=18]=1
         recreate()
         info()
     else:
@@ -407,7 +573,9 @@ file_entry.pack(side=TOP,pady=10)
 #---------------------optionmenu in f6-----------------------------------------------------------
 variable = StringVar(f6)
 variable.set("OptionS") 
-OPTIONS=["No_of_passenger vs class","No_of_passenger vs Class & Gender","class wise Survival vs. Non-Survival","Class wise Survival vs. Non-Survival of child passengers"]
+OPTIONS=["No_of_passenger vs class","No_of_passenger vs Class & Gender",
+         "class wise Survival vs. Non-Survival","Class wise Survival vs. Non-Survival of child passengers",
+         "Total_Passengers in different age group","survivors in different age group"]
 
 
 w = OptionMenu(f6, variable, *OPTIONS)
@@ -415,37 +583,37 @@ w.pack(padx=20)
 
 
 #--------------------------codes for Buttons ----------------------------------------------
-button1=Button(f3,text='Open_csv',command=for_csv)
-button2=Button(f3,text='Open_xls',command=for_xls)
+button1=Button(f3,text='Open_csv',bg="black",fg="white",command=for_csv)
+button2=Button(f3,text='Open_xls',bg="black",fg="white",command=for_xls)
 button1.pack(side=LEFT,pady=10)
 button2.pack(side=RIGHT,pady=10)
 #----------------buttons for display and info-------------------------------------------------
 
-button3=Button(f4,text='Display_Table_Canvas',command=display)
+button3=Button(f4,text='Display_Table_Canvas',bg="black",fg="white",command=display)
 button3.grid(row=0,pady=10,padx=10)
-button4=Button(f4,text='display_info',command=info)
+button4=Button(f4,text='display_info',bg="black",fg="white",command=info)
 button4.grid(row=0,column=4,pady=10,padx=10)
 #-----------------------buttons for data wrangling---------------------------------------------
 
-button8=Button(f5,text="Normalize",command=normalize)
+button8=Button(f5,text="Normalize",bg="black",fg="white",command=normalize)
 button8.pack(padx=30,pady=5)
 
-button6=Button(f5,text='% of_NaN_values',command=nan_values)
+button6=Button(f5,text='% of_NaN_values',bg="black",fg="white",command=nan_values)
 button6.pack(padx=30,pady=5)
 
-button7=Button(f5,text="drop_row_with_NaN",command=drop_row)
+button7=Button(f5,text="drop_row_with_NaN",bg="black",fg="white",command=drop_row)
 button7.pack(padx=30,pady=5)
 
-button5=Button(f5,text='Drop_column',command=drop_col)
+button5=Button(f5,text='Drop_column',bg="black",fg="white",command=drop_col)
 button5.pack(padx=30,pady=5)
 
-button9=Button(f6,text="Add_dummy",command=dummy)
+button9=Button(f6,text="Add_dummy",bg="black",fg="white",command=dummy)
 button9.pack(side=LEFT,padx=20,pady=10)
 
-button10=Button(f6,text="get_Graph",command=get_Graph)
+button10=Button(f6,text="get_Graph",bg="black",fg="white",command=get_Graph)
 button10.pack(side=LEFT,padx=10,pady=10)
 
-
+    
 
 
 
